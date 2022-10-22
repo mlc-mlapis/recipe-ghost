@@ -4,7 +4,7 @@ ghost:
     build:
       - |
         cd ./current
-        yarn cache clean
+        yarn add moment@2.24.0
         yarn
         yarn add ghost-storage-adapter-s3
         mkdir -p ./content/adapters/storage
