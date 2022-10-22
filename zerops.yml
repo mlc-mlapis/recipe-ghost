@@ -4,12 +4,17 @@ ghost:
     build:
       - |
         cd ./current
-        yarn
         yarn cache clean
+        yarn
         yarn add ghost-storage-adapter-s3
         mkdir -p ./content/adapters/storage
         cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
-    deploy: [ ./ ]
+    deploy:
+      - content
+      - current
+      - versions
+      - .ghost-cli
+      - config.production.json
   run:
     prepare:
       - npm install -g ghost-cli@1.23.1
