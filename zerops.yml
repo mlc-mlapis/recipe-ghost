@@ -1,22 +1,11 @@
 ghost:
   build:
     base: [nodejs@16]
-    prepare:
-      - |
-        npm install -g ghost-cli@1.23.1
-        adduser --disabled-password --gecos "" --shell /bin/bash recipe
-        usermod -aG sudo recipe
-        chown -R recipe:recipe /build/source
-        chmod -R 775 /build/source
-        su - recipe
-        cd /build/source
-        mkdir ghost
-        ghost install 5.20.0 --no-prompt --no-setup --no-stack --dir ./ghost/
     build:
       - |
-        cd ./ghost/current
+        cd ./current
         yarn
-        yarn add ghost-storage-adapter-s3@2.8.0
+        yarn add ghost-storage-adapter-s3
         mkdir -p ./content/adapters/storage
         cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
     deploy: [ ./ ]
@@ -29,4 +18,4 @@ ghost:
     init:
       - sudo chown -R recipe:recipe /var/www
       - sudo chmod -R 775 /var/www
-    start: su recipe -c "ghost run --dir ./ghost/"
+    start: su recipe -c "ghost run"
