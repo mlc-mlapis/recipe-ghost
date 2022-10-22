@@ -11,7 +11,7 @@ ghost:
         su - recipe
         cd /build/source
         mkdir ghost
-        ghost install 5.20.0 --no-prompt --no-setup --dir ./ghost/
+        ghost install 5.20.0 --no-prompt --no-setup --no-stack --dir ./ghost/
     build:
       - |
         cd ./ghost/current
