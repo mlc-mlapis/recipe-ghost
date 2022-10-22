@@ -8,7 +8,8 @@ ghost:
         usermod -aG sudo recipe
         chown -R recipe:recipe /build/source
         chmod -R 775 /build/source
-        su recipe -c "ghost install --no-prompt"
+        su - recipe
+        ghost install --no-prompt
     build:
       - |
         cd ./current
