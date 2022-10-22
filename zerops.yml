@@ -3,13 +3,17 @@ ghost:
     base: [nodejs@16]
     prepare:
       - |
+        pwd
         npm install -g ghost-cli@1.23.1
         adduser --disabled-password --gecos "" --shell /bin/bash recipe
         usermod -aG sudo recipe
         chown -R recipe:recipe /build/source
         chmod -R 775 /build/source
         su - recipe
-        ghost install --no-prompt
+        pwd
+        cd /build/source
+        pwd
+        ghost install --no-prompt --no-setup
     build:
       - |
         cd ./current
