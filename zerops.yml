@@ -5,6 +5,7 @@ ghost:
       - |
         cd ./current
         yarn
+        yarn cache clean
         yarn add ghost-storage-adapter-s3
         mkdir -p ./content/adapters/storage
         cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
@@ -14,7 +15,7 @@ ghost:
       - npm install -g ghost-cli@1.23.1
       - adduser --disabled-password --gecos "" --shell /bin/bash recipe
       - usermod -aG sudo recipe
-      - zcli bucket s3 create $STORAGE_HOSTNAME $STORAGE_BUCKET_NAME --x-amz-acl=private
+      # - zcli bucket s3 create $STORAGE_HOSTNAME $STORAGE_BUCKET_NAME --x-amz-acl=private
     init:
       - sudo chown -R recipe:recipe /var/www
       - sudo chmod -R 775 /var/www
