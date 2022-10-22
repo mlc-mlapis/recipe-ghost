@@ -6,6 +6,7 @@ ghost:
         npm install -g ghost-cli@1.23.1
         adduser --disabled-password --gecos "" --shell /bin/bash recipe
         usermod -aG sudo recipe
+        su recipe -c
         ghost install --no-prompt
     build:
       - |
