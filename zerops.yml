@@ -1,10 +1,14 @@
 ghost:
   build:
     base: [nodejs@16]
-    build:
+    prepare:
       - |
         npm install -g ghost-cli@1.23.1
+        adduser --disabled-password --gecos "" --shell /bin/bash recipe
+        usermod -aG sudo recipe
         ghost install --no-prompt
+    build:
+      - |
         cd ./current
         yarn
         yarn add ghost-storage-adapter-s3@2.8.0
