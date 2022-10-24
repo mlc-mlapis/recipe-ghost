@@ -21,7 +21,7 @@ ghost:
         adduser --disabled-password --gecos "" --shell /bin/bash recipe
         usermod -aG sudo recipe
       - |
-        if [[ "zcli bucket s3 create $STORAGE_HOSTNAME $STORAGE_BUCKET_NAME --x-amz-acl=private" -ne 0 ]]; then
+        if ! zcli bucket s3 create $STORAGE_HOSTNAME $STORAGE_BUCKET_NAME --x-amz-acl=private; then
           echo "The bucket was not created, you have to do it manually!"
         fi
     init:
