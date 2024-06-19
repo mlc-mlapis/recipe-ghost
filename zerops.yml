@@ -17,6 +17,7 @@ zerops:
       REGION: usc1
     build:
       base: [nodejs@18]
+      os: ubuntu
       buildCommands:
         - |
           cd ./current
@@ -31,6 +32,7 @@ zerops:
         - .ghost-cli
         - config.production.json
     run:
+      os: ubuntu
       prepareCommands:
         - npm install -g ghost-cli@1.26.0
         - |
