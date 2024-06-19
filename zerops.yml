@@ -1,30 +1,42 @@
-ghost:
-  build:
-    base: [nodejs@16]
+zerops:
+  - setup: ghost
+    envVariables:
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: ${storage_accessKeyId}
+      AWS_SECRET_ACCESS_KEY: ${storage_secretAccessKey}
+      STORAGE_HOSTNAME: storage
+      GHOST_STORAGE_ADAPTER_S3_PATH_BUCKET: ${storage_bucketName}
+      GHOST_STORAGE_ADAPTER_S3_ASSET_HOST: ${storage_apiUrl}/${GHOST_STORAGE_ADAPTER_S3_PATH_BUCKET}
+      GHOST_STORAGE_ADAPTER_S3_ENDPOINT: ${storage_apiUrl}
+      GHOST_STORAGE_ADAPTER_S3_FORCE_PATH_STYLE: true
+      database__connection__database: ${db_hostname}
+      database__connection__host: ${db_hostname}
+      database__connection__password: ${db_password}
+      database__connection__user: ${db_user}
+      url: ${zeropsSubdomain}
+      REGION: usc1
     build:
-      - |
-        cd ./current
-        yarn
-        yarn add ghost-storage-adapter-s3
-        mkdir -p ./content/adapters/storage
-        cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
-    deploy:
-      - content
-      - current
-      - versions
-      - .ghost-cli
-      - config.production.json
-  run:
-    prepare:
-      - npm install -g ghost-cli@1.23.1
-      - |
-        adduser --disabled-password --gecos "" --shell /bin/bash recipe
-        usermod -aG sudo recipe
-      - |
-        if ! zcli bucket s3 create $STORAGE_HOSTNAME $STORAGE_BUCKET_NAME --x-amz-acl=private; then
-          echo "The bucket was not created, you have to do it manually!"
-        fi
-    init:
-      - sudo chown -R recipe:recipe /var/www
-      - sudo chmod -R 775 /var/www
-    start: su recipe -c "ghost run"
+      base: [nodejs@18]
+      buildCommands:
+        - |
+          cd ./current
+          yarn
+          yarn add ghost-storage-adapter-s3
+          mkdir -p ./content/adapters/storage
+          cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
+      deploy:
+        - content
+        - current
+        - versions
+        - .ghost-cli
+        - config.production.json
+    run:
+      prepareCommands:
+        - npm install -g ghost-cli@1.26.0
+        - |
+          adduser --disabled-password --gecos "" --shell /bin/bash recipe
+          usermod -aG sudo recipe
+      initCommands:
+        - sudo chown -R recipe:recipe /var/www
+        - sudo chmod -R 775 /var/www
+      start: su recipe -c "ghost run"
