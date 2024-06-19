@@ -16,29 +16,40 @@ zerops:
       url: ${zeropsSubdomain}
       REGION: usc1
     build:
-      base: [nodejs@18]
+      base: nodejs@18
       os: ubuntu
       buildCommands:
-        - |
-          cd ./current
-          yarn
-          yarn add ghost-storage-adapter-s3
-          mkdir -p ./content/adapters/storage
-          cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
-      deploy:
+        - npm i
+      #  - |
+      #    cd ./current
+      #    yarn
+      #    yarn add ghost-storage-adapter-s3
+      #    mkdir -p ./content/adapters/storage
+      #    cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
+      deployFiles:
+        - ./app/index.js
+        - node_modules
+        - package.json
         - content
         - current
         - versions
         - .ghost-cli
         - config.production.json
     run:
+      base: nodejs@18
       os: ubuntu
-      prepareCommands:
-        - npm install -g ghost-cli@1.26.0
-        - |
-          adduser --disabled-password --gecos "" --shell /bin/bash recipe
-          usermod -aG sudo recipe
-      initCommands:
-        - sudo chown -R recipe:recipe /var/www
-        - sudo chmod -R 775 /var/www
-      start: su recipe -c "ghost run"
+      ports:
+        - port: 2368
+          httpSupport: true
+        - port: 3000
+          httpSupport: true
+      # prepareCommands:
+      #  - npm install -g ghost-cli@1.26.0
+      #  - |
+      #    adduser --disabled-password --gecos "" --shell /bin/bash recipe
+      #    usermod -aG sudo recipe
+      # initCommands:
+      #  - sudo chown -R recipe:recipe /var/www
+      #  - sudo chmod -R 775 /var/www
+      # start: su recipe -c "ghost run"
+      start: npm start
