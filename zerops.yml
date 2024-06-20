@@ -5,7 +5,7 @@ zerops:
       os: ubuntu
       buildCommands:
       #  - npm i
-        - apt update && apt install git
+        - apt update && apt install git -y
         - |
           cd ./current
           yarn
