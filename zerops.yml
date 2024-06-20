@@ -4,17 +4,18 @@ zerops:
       base: nodejs@18
       os: ubuntu
       buildCommands:
-        - npm i
-      #  - |
-      #    cd ./current
-      #    yarn
-      #    yarn add ghost-storage-adapter-s3
-      #    mkdir -p ./content/adapters/storage
-      #    cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
+      #  - npm i
+        - |
+          cd ./current
+          yarn
+          yarn add ghost-storage-adapter-s3
+          mkdir -p ./content/adapters/storage
+          cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
       deployFiles:
-        - ./app/index.js
-        - node_modules
-        - package.json
+      #  - ./app/index.js
+      #  - node_modules
+      #  - package.json
+      #  - .yarnrc.yml
         - content
         - current
         - versions
@@ -43,8 +44,8 @@ zerops:
           httpSupport: true
         - port: 3000
           httpSupport: true
-      # prepareCommands:
-      #  - npm install -g ghost-cli@1.26.0
+      prepareCommands:
+        - npm install -g ghost-cli@1.26.0
       #  - |
       #    adduser --disabled-password --gecos "" --shell /bin/bash recipe
       #    usermod -aG sudo recipe
@@ -52,4 +53,5 @@ zerops:
       #  - sudo chown -R recipe:recipe /var/www
       #  - sudo chmod -R 775 /var/www
       # start: su recipe -c "ghost run"
-      start: npm start
+      start: "ghost run"
+      # start: npm start
