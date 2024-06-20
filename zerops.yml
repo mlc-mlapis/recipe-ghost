@@ -1,20 +1,5 @@
 zerops:
   - setup: ghost
-    envVariables:
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_ACCESS_KEY_ID: ${storage_accessKeyId}
-      AWS_SECRET_ACCESS_KEY: ${storage_secretAccessKey}
-      STORAGE_HOSTNAME: storage
-      GHOST_STORAGE_ADAPTER_S3_PATH_BUCKET: ${storage_bucketName}
-      GHOST_STORAGE_ADAPTER_S3_ASSET_HOST: ${storage_apiUrl}/${GHOST_STORAGE_ADAPTER_S3_PATH_BUCKET}
-      GHOST_STORAGE_ADAPTER_S3_ENDPOINT: ${storage_apiUrl}
-      GHOST_STORAGE_ADAPTER_S3_FORCE_PATH_STYLE: true
-      database__connection__database: ${db_hostname}
-      database__connection__host: ${db_hostname}
-      database__connection__password: ${db_password}
-      database__connection__user: ${db_user}
-      url: ${zeropsSubdomain}
-      REGION: usc1
     build:
       base: nodejs@18
       os: ubuntu
@@ -38,6 +23,21 @@ zerops:
     run:
       base: nodejs@18
       os: ubuntu
+      envVariables:
+        AWS_DEFAULT_REGION: us-east-1
+        AWS_ACCESS_KEY_ID: ${storage_accessKeyId}
+        AWS_SECRET_ACCESS_KEY: ${storage_secretAccessKey}
+        STORAGE_HOSTNAME: storage
+        GHOST_STORAGE_ADAPTER_S3_PATH_BUCKET: ${storage_bucketName}
+        GHOST_STORAGE_ADAPTER_S3_ASSET_HOST: ${storage_apiUrl}/${GHOST_STORAGE_ADAPTER_S3_PATH_BUCKET}
+        GHOST_STORAGE_ADAPTER_S3_ENDPOINT: ${storage_apiUrl}
+        GHOST_STORAGE_ADAPTER_S3_FORCE_PATH_STYLE: true
+        database__connection__database: ${db_hostname}
+        database__connection__host: ${db_hostname}
+        database__connection__password: ${db_password}
+        database__connection__user: ${db_user}
+        url: ${zeropsSubdomain}
+        REGION: usc1
       ports:
         - port: 2368
           httpSupport: true
