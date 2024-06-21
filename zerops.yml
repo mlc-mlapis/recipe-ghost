@@ -8,10 +8,16 @@ zerops:
         - apt update && apt install git -y && apt install jq -y
         - npm install -g ghost-cli
         - |
+          adduser --disabled-password --gecos "" --shell /bin/bash zerops
+          usermod -aG sudo zerops
           mkdir ghost
-          cd ghost
-          ghost install local
+          chown -R zerops:zerops ghost
+          chmod -R 775 ghost
         - |
+          cd ghost
+          su zerops -c "ghost install local"
+        - |
+          cd ghost
           jq '.name = "localhost"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
           jq '.running = "production"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
           rm config.development.json
