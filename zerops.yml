@@ -8,8 +8,6 @@ zerops:
         - apt update && apt install git -y && apt install jq -y
         - npm install -g ghost-cli
         - |
-          adduser --disabled-password --gecos "" --shell /bin/bash zerops
-          usermod -aG sudo zerops
           mkdir ghost
           chown -R zerops:zerops ghost
           chmod -R 775 ghost
