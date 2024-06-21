@@ -5,6 +5,9 @@ zerops:
       os: ubuntu
       buildCommands:
       #  - npm i
+      # rm config.development.json
+      # jq '.name = "localhost"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
+      # jq '.running = "production"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
         - apt update && apt install git -y && apt install jq -y
         - npm install -g ghost-cli
         - |
@@ -17,13 +20,9 @@ zerops:
         - |
           cd ghost
           su zerops
-          jq '.name = "localhost"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
-          jq '.running = "production"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
-          rm config.development.json
           cp ../config.production.json config.production.json
         - |
           cd ./ghost/current
-          su zerops
           yarn add ghost-storage-adapter-s3
           mkdir -p ./content/adapters/storage
           cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
