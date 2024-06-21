@@ -4,7 +4,7 @@ zerops:
       base: nodejs@18
       # os: ubuntu
       buildCommands:
-        - apt update && apt install git -y && apt install jq -y
+        - apk update && apk install git -y && apk install jq -y
         - |
           cd ./current
           yarn
