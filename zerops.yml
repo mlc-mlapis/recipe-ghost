@@ -13,14 +13,20 @@ zerops:
           chmod -R 775 ghost
           cd ghost
           su zerops
-          ghost install local
+          ghost install local --no-setup --no-start
         - |
-          su zerops
           cd ghost
+          su zerops
           jq '.name = "localhost"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
           jq '.running = "production"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
           rm config.development.json
           cp ../config.production.json config.production.json
+        - |
+          cd ./ghost/current
+          su zerops
+          yarn add ghost-storage-adapter-s3
+          mkdir -p ./content/adapters/storage
+          cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
         - |
           cd ./current
           yarn
