@@ -22,7 +22,7 @@ services:
   - hostname: storage
     type: object-storage
     objectStorageSize: 2
-    objectStoragePolicy: public-read
+    objectStoragePolicy: public-objects-read
     priority: 1
   - hostname: ghost
     type: nodejs@18
@@ -32,11 +32,6 @@ services:
     enableSubdomainAccess: true
   - hostname: mailhog
     type: go@1
-    ports:
-      - port: 8025
-        httpSupport: true
-      - port: 1025
-        httpSupport: true
     minContainers: 1
     maxContainers: 1
     buildFromGit: https://github.com/zeropsio/recipe-mailhog@main
