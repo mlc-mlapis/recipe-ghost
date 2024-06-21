@@ -5,7 +5,17 @@ zerops:
       os: ubuntu
       buildCommands:
       #  - npm i
-        - apt update && apt install git -y
+        - apt update && apt install git -y && apt install jq -y
+        - npm install -g ghost-cli
+        - |
+          mkdir ghost
+          cd ghost
+          ghost install local
+        - |
+          jq '.name = "localhost"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
+          jq '.running = "production"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
+          rm config.development.json
+          cp ../config.production.json config.production.json
         - |
           cd ./current
           yarn
@@ -17,6 +27,7 @@ zerops:
       #  - node_modules
       #  - package.json
       #  - .yarnrc.yml
+        - ghost
         - content
         - current
         - versions
@@ -44,7 +55,7 @@ zerops:
         - port: 2368
           httpSupport: true
       prepareCommands:
-        - npm install -g ghost-cli@1.26.0
+        - npm install -g ghost-cli
       #  - |
       #    adduser --disabled-password --gecos "" --shell /bin/bash recipe
       #    usermod -aG sudo recipe
