@@ -2,7 +2,7 @@ zerops:
   - setup: ghost
     build:
       base: nodejs@18
-      os: ubuntu
+      # os: ubuntu
       buildCommands:
         - apt update && apt install git -y && apt install jq -y
         - |
@@ -19,7 +19,7 @@ zerops:
         - config.production.json
     run:
       base: nodejs@18
-      os: ubuntu
+      # os: ubuntu
       envVariables:
         AWS_DEFAULT_REGION: us-east-1
         AWS_ACCESS_KEY_ID: ${storage_accessKeyId}
