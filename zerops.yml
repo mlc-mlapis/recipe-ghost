@@ -4,31 +4,7 @@ zerops:
       base: nodejs@18
       os: ubuntu
       buildCommands:
-      #  - npm i
-      # rm config.development.json
-      # jq '.name = "localhost"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
-      # jq '.running = "production"' .ghost-cli > tmp.ghost-cli && mv tmp.ghost-cli .ghost-cli
-      
         - apt update && apt install git -y && apt install jq -y
-        - npm install -g ghost-cli
-        - |
-          mkdir ghost
-          chown -R zerops:zerops ghost
-          chmod -R 775 ghost
-          cd ghost
-          su zerops
-          ghost install local --no-setup --no-start
-          ghost setup --pname ghost-process
-          jq '. + { "running": "production" }'
-        - |
-          cd ghost
-          su zerops
-          cp ../config.production.json config.production.json
-        - |
-          cd ./ghost/current
-          yarn add ghost-storage-adapter-s3
-          mkdir -p ./content/adapters/storage
-          cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
         - |
           cd ./current
           yarn
@@ -36,11 +12,6 @@ zerops:
           mkdir -p ./content/adapters/storage
           cp -r ./node_modules/ghost-storage-adapter-s3 ./content/adapters/storage/s3
       deployFiles:
-      #  - ./app/index.js
-      #  - node_modules
-      #  - package.json
-      #  - .yarnrc.yml
-        - ghost
         - content
         - current
         - versions
@@ -69,12 +40,4 @@ zerops:
           httpSupport: true
       prepareCommands:
         - npm install -g ghost-cli
-      #  - |
-      #    adduser --disabled-password --gecos "" --shell /bin/bash recipe
-      #    usermod -aG sudo recipe
-      # initCommands:
-      #  - sudo chown -R recipe:recipe /var/www
-      #  - sudo chmod -R 775 /var/www
-      # start: su recipe -c "ghost run"
-      start: "ghost run"
-      # start: npm start
+      start: ghost run
