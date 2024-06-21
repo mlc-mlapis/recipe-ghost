@@ -26,9 +26,6 @@ services:
     priority: 1
   - hostname: ghost
     type: nodejs@18
-    ports:
-      - port: 2368
-        httpSupport: true
     minContainers: 1
     maxContainers: 1
     buildFromGit: https://github.com/zeropsio/recipe-ghost@main
