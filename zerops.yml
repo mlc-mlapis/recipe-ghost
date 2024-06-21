@@ -8,9 +8,11 @@ zerops:
         - apt update && apt install git -y && apt install jq -y
         - npm install -g ghost-cli
         - |
-          su zerops
           mkdir ghost
+          chown -R zerops:zerops ghost
+          chmod -R 775 ghost
           cd ghost
+          su zerops
           ghost install local
         - |
           su zerops
