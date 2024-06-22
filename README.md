@@ -1,41 +1,30 @@
-# Recipe Ghost
+# Zerops x Ghost CMS
 
-Zerops Ghost implementation.
+![Ghost](https://github.com/zeropsio/recipe-shared-assets/blob/main/covers/cover-ghost.png)
 
-## Zerops YAML import script
+[Ghost](https://github.com/TryGhost/Ghost) is a full headless CMS and also an open source blogging platform written in JavaScript and distributed under the MIT License, designed to simplify the process of online publishing for individual bloggers as well as online publications. [Zerops](https://zerops.io) recipe for Ghost includes all necessary parts to demonstrate its power in Zerops environment.
 
-The script is intended to create a new project **ghost-app** with four services represented by hostnames: **db** (fully managed [Zerops MariaDB](https://docs.zerops.io/documentation/services/databases/mariadb.html) database), **storage** (fully managed [Zerops S3-compatible](https://docs.zerops.io/documentation/services/storage/s3.html) object storage), **ghost** ([Zerops Node.js-based](https://docs.zerops.io/documentation/services/runtimes/nodejs.html) Ghost application instance), and **mailhog** ([Zerops Go-based](https://docs.zerops.io/documentation/services/runtimes/golang.html) shadow SMTP server). The **db** and **storage** services are created first with `priority: 1`. They have to exist and run before the runtime services **ghost** and **mailhog** will be built, deployed, and run.
+## Deploy on Zerops
 
-```yaml
-project:
-  name: ghost-app
-  tags:
-    - Ghost
-    - MailHog
-    - MariaDB
-    - MinIO
-services:
-  - hostname: db
-    type: mariadb@10.6
-    mode: NON_HA
-    priority: 2
-  - hostname: storage
-    type: object-storage
-    objectStorageSize: 2
-    objectStoragePolicy: public-objects-read
-    priority: 1
-  - hostname: ghost
-    type: nodejs@18
-    verticalAutoscaling:
-      cpuMode: SHARED
-      minCpu: 1
-      minRam: 1
-    minContainers: 1
-    maxContainers: 1
-    buildFromGit: https://github.com/zeropsio/recipe-ghost@main
-    enableSubdomainAccess: true
-  - hostname: mailpit
-    type: go@1
-    buildFromGit: https://github.com/zeropsio/recipe-mailpit
-    enableSubdomainAccess: true
-```
+You can either click the deploy button to deploy directly on Zerops, or manually copy the [import yaml](https://github.com/zeropsio/recipe-ghost/zerops-project-import.yml) to the import dialog in the Zerops app.
+
+[![Deploy on Zerops](https://github.com/zeropsio/recipe-shared-assets/blob/main/deploy-button/green/deploy-button.svg)](https://app.zerops.io/recipe/ghost)
+
+## Recipe features
+
+- Zerops **MariaDB 10.6** service as database
+- Zerops **Object Storage** (S3 compatible) service as file system
+- Logs set up to use **syslog** and accessible through Zerops GUI
+- Utilization of Zerops built-in **environment variables** system
+- [Mailpit](https://github.com/axllent/mailpit) as **SMTP mock server**
+
+## Production vs. recipe mode
+
+The difference may come down to:
+
+- Use at least two containers for Ghost service to achieve high reliability and resilience (add `minContainers: 2` in recipe YAML, `ghost` service section).
+- Use highly available version of the MariaDB database (change `mode` from `NON_HA` to `HA` in recipe YAML, `db` service section) when Galera cluster will be created.
+- Setting `SET SESSION wsrep_sync_wait=1;` for the cluster to force synchronization among database nodes because of the actual state of Ghost's support for database HA.
+- Use a production-ready third-party SMTP server instead of Mailpit.
+
+Need help setting your project up? Join [Zerops Discord community](https://discord.com/invite/WDvCZ54).
